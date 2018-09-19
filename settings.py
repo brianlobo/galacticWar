@@ -1,3 +1,4 @@
+
 class Settings():
     ''' Stores all settings for Galactic War '''
 
