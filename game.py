@@ -15,12 +15,13 @@ def run_game():
     pygame.display.set_caption("Galactic War")
 
     # Make the ship
-    ship = Ship(screen)
+    ship = Ship(ai_settings, screen)
 
     # Start the main loop for the game
     while True:
         # Watch for keyboard and mouse events
-        game_functions.check_events()
+        game_functions.check_events(ship)
+        ship.update()
         # Updates the images on the screen and flip to new screen
         game_functions.update_screen(ai_settings, screen, ship)
 
