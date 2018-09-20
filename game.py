@@ -31,9 +31,8 @@ def run_game():
         game_functions.check_events(ai_settings, screen, ship, bullets)
         ship.update()
         bullets.update()
-        # Deletes bullets that are no longer on screen
         game_functions.update_bullets(bullets)
-        # Updates the images on the screen and flip to new screen
+        game_functions.update_aliens(ai_settings, aliens)
         game_functions.update_screen(ai_settings, screen, ship, aliens, bullets)
 
 if __name__ == '__main__':
