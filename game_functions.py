@@ -4,7 +4,7 @@ from time import sleep
 from bullet import Bullet
 from enemy import Alien
 
-def check_events(game_settings, screen, ship, bullets):
+def check_events(game_settings, screen, stats, play_button, ship, bullets):
 # Watch for keyboard and mouse events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -13,6 +13,14 @@ def check_events(game_settings, screen, ship, bullets):
             check_keydown_events(event, game_settings, screen, ship, bullets)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            check_play_button(stats, play_button, mouse_x, mouse_y)
+
+def check_play_button(stats, play_button, mouse_x, mouse_y):
+    '''Start a new game when player clicks the button'''
+    if play_button.rect.collidepoint(mouse_x, mouse_y):
+        stats.game_active = True
 
 def check_keydown_events(event, game_settings, screen, ship, bullets):
     # Responds to keypresses
@@ -33,7 +41,8 @@ def check_keyup_events(event, ship):
     elif event.key == pygame.K_LEFT:
         ship.movement_left = False
 
-def update_screen(game_settings, screen, ship, aliens, bullets):
+def update_screen(game_settings, screen, stats, ship, aliens, bullets,
+                    play_button):
     # Updates the images on the screen and flip to new screen
     screen.fill(game_settings.bg_color)
     # Redraw all bullets behind ship and aliens
@@ -41,6 +50,9 @@ def update_screen(game_settings, screen, ship, aliens, bullets):
         bullet.draw_bullet()
     ship.blitme()
     aliens.draw(screen)
+    # Draw button if game is inactive
+    if not stats.game_active:
+        play_button.draw_button()
     # Make the most recently drawn screen visable
     pygame.display.flip()
 
@@ -118,7 +130,7 @@ def change_fleet_direction(game_settings, aliens):
 
 def ship_hit(game_settings, stats, screen, ship, aliens, bullets):
     '''Respond to ship being hit by alien'''
-    if stats.ships_left > 0:
+    if stats.ships_left > 1:
         # Decrement ships_left
         stats.ships_left -= 1
         # Empty the list of aliens and bullets
