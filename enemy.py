@@ -9,7 +9,10 @@ class Alien(Sprite):
         self.game_settings = game_settings
 
         # Load alien image and set its rect attribute
-        self.image = pygame.image.load('images/enemy.png')
+        try:
+            self.image = pygame.image.load('images/enemy.png')
+        except libpng:
+            print("ignore")
         self.rect = self.image.get_rect()
 
         # Start each new alien near the top left corner
